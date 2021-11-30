@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MusicSearch</string>
+    <string name="error_stub">Error</string>
+    <string name="dialog_title_stub">Undefined error</string>
+    <string name="label">Album title</string>
+    <string name="ok">OK</string>
 </resources>
