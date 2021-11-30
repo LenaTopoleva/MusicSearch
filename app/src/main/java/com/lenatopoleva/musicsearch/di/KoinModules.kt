@@ -5,12 +5,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.lenatopoleva.musicsearch.model.datasource.db.RoomDatabase
 import com.lenatopoleva.musicsearch.model.dispatchers.DispatcherProvider
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
+import com.lenatopoleva.musicsearch.model.interactor.AuthInteractor
+import com.lenatopoleva.musicsearch.model.interactor.IAuthInteractor
 import com.lenatopoleva.musicsearch.model.interactor.ISplashInteractor
 import com.lenatopoleva.musicsearch.model.interactor.SplashInteractor
 import com.lenatopoleva.musicsearch.model.repository.AuthRepository
 import com.lenatopoleva.musicsearch.model.repository.IAuthRepository
 import com.lenatopoleva.musicsearch.viewmodel.activity.MainActivityViewModel
 import com.lenatopoleva.musicsearch.viewmodel.activity.SplashViewModel
+import com.lenatopoleva.musicsearch.viewmodel.fragment.AuthViewModel
 import org.koin.dsl.module
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
@@ -28,7 +31,8 @@ val viewModelModule = module {
             mutableMapOf(
                 MainActivityViewModel::class.java to Provider<ViewModel>{
                     MainActivityViewModel ( get<Router>()) },
-                SplashViewModel::class.java to Provider<ViewModel>{ SplashViewModel(get(), get(), get()) }
+                SplashViewModel::class.java to Provider<ViewModel>{ SplashViewModel(get(), get()) },
+                AuthViewModel::class.java to Provider<ViewModel> { AuthViewModel(get(), get(), get()) }
             )
         map
     }
@@ -43,11 +47,28 @@ val navigation = module {
 
 val splashActivity = module {
     factory<ISplashInteractor> { SplashInteractor(get()) }
-    factory { SplashViewModel(get(), get(), get()) }
+    factory { SplashViewModel(get(), get()) }
 }
 
 val mainActivity = module {
     factory { MainActivityViewModel(get<Router>()) }
+}
+
+val albumsFragment = module{
+
+}
+
+val albumDetailsFragment = module {
+
+}
+
+val authFragment = module {
+    factory { AuthViewModel(get(), get(), get()) }
+    factory<IAuthInteractor> { AuthInteractor(get()) }
+}
+
+val registrationFragment = module {
+
 }
 
 

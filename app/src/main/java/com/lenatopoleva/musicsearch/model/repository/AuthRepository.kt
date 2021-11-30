@@ -8,4 +8,7 @@ class AuthRepository(private val dataSource: IAuthDataSource): IAuthRepository {
     override suspend fun getAuthUser(): User? =
         dataSource.getAuthUser()
 
+    override suspend fun authUser(email: String, password: String): User? =
+        dataSource.authUser(email, password)
+
 }

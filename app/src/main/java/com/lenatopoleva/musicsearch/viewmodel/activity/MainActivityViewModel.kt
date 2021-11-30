@@ -12,7 +12,7 @@ class MainActivityViewModel(private val router: Router): ViewModel() {
 
     fun onCreate(isAuth: Boolean) {
         if(isAuth) router.replaceScreen(Screens.AlbumsScreen())
-        else println("here auth screen will opens")
+        else router.replaceScreen(Screens.AuthScreen())
     }
 
 }

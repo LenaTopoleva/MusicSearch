@@ -8,11 +8,9 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import ru.terrakok.cicerone.Router
 
 class SplashViewModel(private val interactor: ISplashInteractor,
-                      private val dispatcherProvider: IDispatcherProvider,
-                      private val router: Router
+                      private val dispatcherProvider: IDispatcherProvider
 ): ViewModel() {
 
     private val initialState: AuthState = AuthState.Initial

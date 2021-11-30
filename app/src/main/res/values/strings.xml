@@ -4,4 +4,13 @@
     <string name="dialog_title_stub">Undefined error</string>
     <string name="label">Album title</string>
     <string name="ok">OK</string>
+    <string name="log_in">Log in</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="password_rule">Password must contain at least 6 characters, a number, lower case letter, upper case letter.</string>
+    <string name="registration">REGISTRATION</string>
+    <string name="log_in_btn">LOG IN</string>
+    <string name="oops">Oops</string>
+    <string name="user_is_not_registrated">User with this login and password is not registered.</string>
+    <string name="email_error">Invalid email</string>
 </resources>

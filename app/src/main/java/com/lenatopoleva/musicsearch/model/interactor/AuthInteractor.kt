@@ -1,0 +1,14 @@
+package com.lenatopoleva.musicsearch.model.interactor
+
+import com.lenatopoleva.musicsearch.model.data.AuthState
+import com.lenatopoleva.musicsearch.model.data.entity.User
+import com.lenatopoleva.musicsearch.model.repository.IAuthRepository
+
+class AuthInteractor(
+    private val authRepository: IAuthRepository
+): IAuthInteractor {
+
+    override suspend fun authUser(email: String, password: String): AuthState {
+            return AuthState.Success(authRepository.authUser(email, password))
+    }
+}

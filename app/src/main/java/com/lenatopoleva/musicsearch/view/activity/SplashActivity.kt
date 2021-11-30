@@ -1,14 +1,12 @@
 package com.lenatopoleva.musicsearch.view.activity
 
-import android.content.Context
-import android.util.AttributeSet
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.lenatopoleva.musicsearch.R
 import com.lenatopoleva.musicsearch.model.data.AuthState
-import com.lenatopoleva.musicsearch.utils.ui.AuthAlertDialogFragment
+import com.lenatopoleva.musicsearch.utils.ui.AlertDialogFragment
+import com.lenatopoleva.musicsearch.utils.ui.alertdialog.SplashAlertDialogFragment
 import com.lenatopoleva.musicsearch.viewmodel.activity.SplashViewModel
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.getKoin
@@ -38,19 +36,18 @@ class SplashActivity: AppCompatActivity() {
             }
             is AuthState.Error ->  {
                 showAlertDialog(getString(R.string.error_stub),
-                    authState.error.message)
+                    authState.error.message ?: "")
             }
         }
     }
 
     private fun startMainActivity(isAuth: Boolean){
-        MainActivity.start(this,true)
+        MainActivity.start(this, isAuth)
         finish()
     }
 
-    private fun showAlertDialog(title: String?, message: String?) {
-        println("showAlertDialog")
-        AuthAlertDialogFragment.newInstance(title, message).show(supportFragmentManager, AuthAlertDialogFragment.DIALOG_TAG)
+    private fun showAlertDialog(title: String, message: String) {
+        SplashAlertDialogFragment. newInstance(title, message).show(supportFragmentManager, AlertDialogFragment.DIALOG_TAG)
     }
 
 }

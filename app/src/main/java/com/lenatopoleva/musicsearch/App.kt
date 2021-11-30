@@ -16,7 +16,8 @@ class App : Application(){
         instance = this
         startKoin {
             androidContext(applicationContext)
-            modules(listOf(application, viewModelModule, navigation, splashActivity, mainActivity))
+            modules(listOf(application, viewModelModule, navigation, splashActivity, mainActivity,
+                albumsFragment, albumDetailsFragment, authFragment, registrationFragment))
         }
     }
 
