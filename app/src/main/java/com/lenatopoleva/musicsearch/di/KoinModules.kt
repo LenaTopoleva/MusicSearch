@@ -14,6 +14,7 @@ import com.lenatopoleva.musicsearch.model.repository.IAuthRepository
 import com.lenatopoleva.musicsearch.viewmodel.activity.MainActivityViewModel
 import com.lenatopoleva.musicsearch.viewmodel.activity.SplashViewModel
 import com.lenatopoleva.musicsearch.viewmodel.fragment.AuthViewModel
+import com.lenatopoleva.musicsearch.viewmodel.fragment.RegistrationViewModel
 import org.koin.dsl.module
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
@@ -32,7 +33,8 @@ val viewModelModule = module {
                 MainActivityViewModel::class.java to Provider<ViewModel>{
                     MainActivityViewModel ( get<Router>()) },
                 SplashViewModel::class.java to Provider<ViewModel>{ SplashViewModel(get(), get()) },
-                AuthViewModel::class.java to Provider<ViewModel> { AuthViewModel(get(), get(), get()) }
+                AuthViewModel::class.java to Provider<ViewModel> { AuthViewModel(get(), get(), get()) },
+                RegistrationViewModel::class.java to Provider<ViewModel> { RegistrationViewModel(get(), get(), get()) }
             )
         map
     }
@@ -68,7 +70,7 @@ val authFragment = module {
 }
 
 val registrationFragment = module {
-
+    factory { RegistrationViewModel(get(), get(), get()) }
 }
 
 

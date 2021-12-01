@@ -7,6 +7,10 @@ import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
 import com.lenatopoleva.musicsearch.model.interactor.IAuthInteractor
 import com.lenatopoleva.musicsearch.navigation.Screens
+import com.lenatopoleva.musicsearch.utils.ui.TextValidator.Companion.EMAIL
+import com.lenatopoleva.musicsearch.utils.ui.TextValidator.Companion.EMAIL_PATTERN
+import com.lenatopoleva.musicsearch.utils.ui.TextValidator.Companion.PASSWORD
+import com.lenatopoleva.musicsearch.utils.ui.TextValidator.Companion.PASSWORD_PATTERN
 import kotlinx.coroutines.*
 import ru.terrakok.cicerone.Router
 import java.util.regex.Matcher
@@ -17,14 +21,6 @@ class AuthViewModel(
     private val authInteractor: IAuthInteractor,
     private val router: Router
 ): ViewModel() {
-
-    companion object{
-        const val EMAIL = "email"
-        const val EMAIL_PATTERN =
-            "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-        const val PASSWORD = "password"
-        const val PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z[0-9]]{6,}$"
-    }
 
     private val _emailValidationLiveData = MutableLiveData<Boolean>()
     private val _passwordValidationLiveData = MutableLiveData<Boolean>()

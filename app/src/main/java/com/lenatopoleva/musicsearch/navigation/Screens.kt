@@ -2,6 +2,7 @@ package com.lenatopoleva.musicsearch.navigation
 
 import com.lenatopoleva.musicsearch.view.fragment.AlbumsFragment
 import com.lenatopoleva.musicsearch.view.fragment.AuthFragment
+import com.lenatopoleva.musicsearch.view.fragment.RegistrationFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 class Screens {
@@ -15,7 +16,7 @@ class Screens {
     }
 
     class RegistrationScreen(): SupportAppScreen(){
-//        override fun getFragment() = RegistrationFragment.newInstance()
+        override fun getFragment() = RegistrationFragment.newInstance()
     }
 
 }

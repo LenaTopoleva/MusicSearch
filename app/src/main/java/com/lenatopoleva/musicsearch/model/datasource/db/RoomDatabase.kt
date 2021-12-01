@@ -18,4 +18,10 @@ class RoomDatabase: IAuthDataSource {
         return User("Ivan", "Ivanov", 30, "", "", "")
 //        return null
     }
+
+    override suspend fun registerUser(name: String, surname: String, age: String,
+        phone: String, email: String, password: String): Boolean {
+        delay(1000)
+        return true
+    }
 }

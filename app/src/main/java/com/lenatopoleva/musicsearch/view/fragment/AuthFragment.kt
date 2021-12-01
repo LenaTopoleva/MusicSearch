@@ -15,8 +15,6 @@ import com.lenatopoleva.musicsearch.utils.ui.AlertDialogFragment
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator
 import com.lenatopoleva.musicsearch.utils.ui.alertdialog.AuthAlertDialogFragment
 import com.lenatopoleva.musicsearch.viewmodel.fragment.AuthViewModel
-import com.lenatopoleva.musicsearch.viewmodel.fragment.AuthViewModel.Companion.EMAIL
-import com.lenatopoleva.musicsearch.viewmodel.fragment.AuthViewModel.Companion.PASSWORD
 import org.koin.android.ext.android.getKoin
 
 class AuthFragment: Fragment(), BackButtonListener {
@@ -113,7 +111,7 @@ class AuthFragment: Fragment(), BackButtonListener {
 
     private fun changePasswordTextInputLayout(isValid: Boolean){
         if(!isValid){
-            binding.password.error = getString(R.string.password_rule)
+            binding.password.error = getString(R.string.password_error)
         } else binding.password.error = null
     }
 
