@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">MusicSearch</string>
+
     <string name="error_stub">Error</string>
     <string name="dialog_title_stub">Undefined error</string>
     <string name="label">Album title</string>
@@ -26,5 +27,20 @@
     <string name="phone_error">Invalid phone</string>
     <string name="email_error">Invalid email</string>
     <string name="password_error">Password must contain at least 6 characters, a number, lower case letter, upper case letter</string>
+    <string name="reg_error_email_exists">Registration failed. User with this email address is already registered.</string>
+    <string name="search">Search</string>
+
+    <string name="dialog_tittle_sorry">Sorry</string>
+    <string name="no_media_found_error">Couldn\'t find any media</string>
+    <string name="dialog_title_device_is_offline">No internet connection</string>
+    <string name="dialog_message_device_is_offline">Please, check internet connection.</string>
+    <string name="album_image">Album image</string>
+    <string name="album">Album</string>
+    <string name="artist">Artist</string>
+    <string name="genre">Genre</string>
+    <string name="country">Country</string>
+    <string name="release_date">Date</string>
+    <string name="user_not_found">User not found.</string>
+    <string name="logout_error">Logout completed unsuccessfully. Please, try again later.</string>
 
 </resources>

@@ -17,4 +17,20 @@
     <style name="SplashTheme" parent="Theme.MusicSearch">
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
+
+    <style name="AppBarTheme" parent="Widget.MaterialComponents.Toolbar.Primary">
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <!-- Gets rid of the "underline" in the text -->
+        <item name="queryBackground">@null</item>
+        <!-- Gets rid of the search icon when the SearchView is expanded -->
+        <item name="searchHintIcon">@null</item>
+        <!-- The hint text that appears when the user has not typed anything -->
+        <item name="queryHint">@string/label</item>
+        <!-- Change edit text color and queryHint color -->
+        <item name="android:editTextColor">?colorOnPrimary</item>
+        <item name="android:textColorHint">@color/white_with_alpha</item>
+    </style>
+
 </resources>

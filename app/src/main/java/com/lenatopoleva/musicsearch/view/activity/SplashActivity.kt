@@ -1,14 +1,16 @@
 package com.lenatopoleva.musicsearch.view.activity
 
+import android.content.Context
+import android.util.AttributeSet
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.lenatopoleva.musicsearch.R
 import com.lenatopoleva.musicsearch.model.data.AuthState
-import com.lenatopoleva.musicsearch.utils.ui.AlertDialogFragment
-import com.lenatopoleva.musicsearch.utils.ui.alertdialog.SplashAlertDialogFragment
+import com.lenatopoleva.musicsearch.utils.ui.MainActivityAlertDialogFragment
+import com.lenatopoleva.musicsearch.utils.ui.alertdialog.SplashActivityAlertDialogFragment
 import com.lenatopoleva.musicsearch.viewmodel.activity.SplashViewModel
-import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.getKoin
 
 class SplashActivity: AppCompatActivity() {
@@ -17,11 +19,15 @@ class SplashActivity: AppCompatActivity() {
         ViewModelProvider(this, getKoin().get()).get(SplashViewModel::class.java)
     }
 
+    private val authStateObserver = Observer<AuthState> { renderData(it) }
+
+    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+        model.subscribe().observe(this, authStateObserver)
+        return super.onCreateView(name, context, attrs)
+    }
+
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launchWhenResumed {
-            model.subscribe().collect { renderData(it) }
-        }
         isUserAuth()
     }
 
@@ -29,7 +35,6 @@ class SplashActivity: AppCompatActivity() {
 
     private fun renderData(authState: AuthState){
         when(authState) {
-            is AuthState.Initial -> {}
             is AuthState.Success -> {
                 authState.data?.let { startMainActivity(true) }
                     ?: startMainActivity(false)
@@ -47,7 +52,7 @@ class SplashActivity: AppCompatActivity() {
     }
 
     private fun showAlertDialog(title: String, message: String) {
-        SplashAlertDialogFragment. newInstance(title, message).show(supportFragmentManager, AlertDialogFragment.DIALOG_TAG)
+        SplashActivityAlertDialogFragment. newInstance(title, message).show(supportFragmentManager, MainActivityAlertDialogFragment.DIALOG_TAG)
     }
 
 }

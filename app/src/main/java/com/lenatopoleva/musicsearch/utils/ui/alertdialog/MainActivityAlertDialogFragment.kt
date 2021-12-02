@@ -6,12 +6,22 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.lenatopoleva.musicsearch.R
+import com.lenatopoleva.musicsearch.utils.ui.alertdialog.AlertDialogListener
+import com.lenatopoleva.musicsearch.viewmodel.activity.MainActivityViewModel
+import org.koin.android.ext.android.getKoin
 
-open class AlertDialogFragment: AppCompatDialogFragment() {
+open class MainActivityAlertDialogFragment: AppCompatDialogFragment() {
 
     open val onOkClickListener: DialogInterface.OnClickListener = DialogInterface.OnClickListener { dialog, _ ->
+        (model as? AlertDialogListener)?.alertDialogBtnOkClicked()
         dialog?.dismiss()
+    }
+
+    open val model: ViewModel by lazy {
+        ViewModelProvider(requireActivity(),  getKoin().get())[MainActivityViewModel::class.java]
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -25,11 +35,19 @@ open class AlertDialogFragment: AppCompatDialogFragment() {
         return alertDialog
     }
 
-
     companion object Creator {
         const val DIALOG_TAG = "com.lenatopoleva.musicsearch.utils.ui.basealertdialogfragment"
         const val TITLE_EXTRA = "com.lenatopoleva.musicsearch.utils.ui.titleextra"
         const val MESSAGE_EXTRA = "com.lenatopoleva.musicsearch.utils.ui.messageextra"
+
+        fun newInstance(title: String, message: String): MainActivityAlertDialogFragment {
+            val args = Bundle()
+            args.putString(TITLE_EXTRA, title)
+            args.putString(MESSAGE_EXTRA, message)
+            val splashDialogFragment = MainActivityAlertDialogFragment()
+            splashDialogFragment.arguments = args
+            return splashDialogFragment
+        }
     }
 
     private fun getStubAlertDialog(context: Context): AlertDialog {
@@ -47,7 +65,7 @@ open class AlertDialogFragment: AppCompatDialogFragment() {
             builder.setMessage(message)
         }
         builder.setCancelable(true)
-        builder.setPositiveButton(getString(R.string.ok), onOkClickListener)
+        builder.setPositiveButton(context.getString(R.string.ok), onOkClickListener)
         return builder.create()
     }
 }

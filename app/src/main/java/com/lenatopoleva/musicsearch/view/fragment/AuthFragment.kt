@@ -11,9 +11,8 @@ import com.lenatopoleva.musicsearch.R
 import com.lenatopoleva.musicsearch.databinding.FragmentAuthBinding
 import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.utils.ui.BackButtonListener
-import com.lenatopoleva.musicsearch.utils.ui.AlertDialogFragment
+import com.lenatopoleva.musicsearch.utils.ui.MainActivityAlertDialogFragment
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator
-import com.lenatopoleva.musicsearch.utils.ui.alertdialog.AuthAlertDialogFragment
 import com.lenatopoleva.musicsearch.viewmodel.fragment.AuthViewModel
 import org.koin.android.ext.android.getKoin
 
@@ -91,7 +90,7 @@ class AuthFragment: Fragment(), BackButtonListener {
         when(authState){
             is AuthState.Success -> {
                 val user = authState.data
-                user?.let { model.userIsAuth() } ?: showAlertDialog(getString(R.string.oops),
+                user?.let { model.userIsAuth() } ?: showAlertDialog(getString(R.string.error_stub),
                     getString(R.string.user_is_not_registrated))
             }
             is AuthState.Error -> showAlertDialog(getString(R.string.error_stub),
@@ -100,7 +99,7 @@ class AuthFragment: Fragment(), BackButtonListener {
     }
 
     private fun showAlertDialog(title: String, message: String) {
-        AuthAlertDialogFragment.newInstance(title, message).show(childFragmentManager, AlertDialogFragment.DIALOG_TAG)
+        MainActivityAlertDialogFragment.newInstance(title, message).show(childFragmentManager, MainActivityAlertDialogFragment.DIALOG_TAG)
     }
 
     private fun changeEmailTextInputLayout(isValid: Boolean) {

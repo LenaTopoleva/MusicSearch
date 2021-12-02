@@ -1,18 +1,19 @@
 package com.lenatopoleva.musicsearch.di
 
+import android.widget.ImageView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.lenatopoleva.musicsearch.model.datasource.db.RoomDatabase
+import com.lenatopoleva.musicsearch.model.datasource.network.Retrofit
 import com.lenatopoleva.musicsearch.model.dispatchers.DispatcherProvider
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
-import com.lenatopoleva.musicsearch.model.interactor.AuthInteractor
-import com.lenatopoleva.musicsearch.model.interactor.IAuthInteractor
-import com.lenatopoleva.musicsearch.model.interactor.ISplashInteractor
-import com.lenatopoleva.musicsearch.model.interactor.SplashInteractor
-import com.lenatopoleva.musicsearch.model.repository.AuthRepository
-import com.lenatopoleva.musicsearch.model.repository.IAuthRepository
+import com.lenatopoleva.musicsearch.model.imageloader.IImageLoader
+import com.lenatopoleva.musicsearch.model.interactor.*
+import com.lenatopoleva.musicsearch.model.repository.*
+import com.lenatopoleva.musicsearch.view.imageloader.GlideImageLoader
 import com.lenatopoleva.musicsearch.viewmodel.activity.MainActivityViewModel
 import com.lenatopoleva.musicsearch.viewmodel.activity.SplashViewModel
+import com.lenatopoleva.musicsearch.viewmodel.fragment.AlbumsViewModel
 import com.lenatopoleva.musicsearch.viewmodel.fragment.AuthViewModel
 import com.lenatopoleva.musicsearch.viewmodel.fragment.RegistrationViewModel
 import org.koin.dsl.module
@@ -22,8 +23,12 @@ import ru.terrakok.cicerone.Router
 import javax.inject.Provider
 
 val application = module {
+    single<IRepository> { Repository(Retrofit()) }
+    single<IRepositoryLocal> { RepositoryLocal(RoomDatabase()) }
     single<IAuthRepository> { AuthRepository(RoomDatabase()) }
     single<IDispatcherProvider> { DispatcherProvider() }
+    single<IImageLoader<ImageView>> { GlideImageLoader() }
+
 }
 
 val viewModelModule = module {
@@ -34,7 +39,9 @@ val viewModelModule = module {
                     MainActivityViewModel ( get<Router>()) },
                 SplashViewModel::class.java to Provider<ViewModel>{ SplashViewModel(get(), get()) },
                 AuthViewModel::class.java to Provider<ViewModel> { AuthViewModel(get(), get(), get()) },
-                RegistrationViewModel::class.java to Provider<ViewModel> { RegistrationViewModel(get(), get(), get()) }
+                RegistrationViewModel::class.java to Provider<ViewModel> { RegistrationViewModel(get(), get(), get()) },
+                AlbumsViewModel::class.java to Provider<ViewModel>{
+                    AlbumsViewModel (get<IAlbumsInteractor>(), get<Router>(), get<IDispatcherProvider>()) }
             )
         map
     }
@@ -56,10 +63,6 @@ val mainActivity = module {
     factory { MainActivityViewModel(get<Router>()) }
 }
 
-val albumsFragment = module{
-
-}
-
 val albumDetailsFragment = module {
 
 }
@@ -71,6 +74,11 @@ val authFragment = module {
 
 val registrationFragment = module {
     factory { RegistrationViewModel(get(), get(), get()) }
+}
+
+val albumsFragment = module {
+    factory { AlbumsViewModel(get(), get(), get()) }
+    factory<IAlbumsInteractor> { AlbumsInteractor(get(), get(), get()) }
 }
 
 

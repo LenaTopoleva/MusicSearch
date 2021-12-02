@@ -19,4 +19,8 @@ class Screens {
         override fun getFragment() = RegistrationFragment.newInstance()
     }
 
+    class AlbumDetailsScreen(val albumId: Int): SupportAppScreen() {
+//        override fun getFragment() = AlbumDetailsFragment.newInstance(albumId)
+    }
+
 }

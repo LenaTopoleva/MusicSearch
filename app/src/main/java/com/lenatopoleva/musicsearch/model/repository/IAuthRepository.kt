@@ -10,4 +10,6 @@ interface IAuthRepository {
 
     suspend fun registerUser(name: String, surname: String, age: String,
                              phone: String, email: String, password: String): Boolean
+
+    suspend fun logout(email: String): Boolean
 }

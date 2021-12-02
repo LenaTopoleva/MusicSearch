@@ -1,28 +1,25 @@
 package com.lenatopoleva.musicsearch.viewmodel.activity
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
 import com.lenatopoleva.musicsearch.model.interactor.ISplashInteractor
+import com.lenatopoleva.musicsearch.utils.ui.alertdialog.AlertDialogListener
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 class SplashViewModel(private val interactor: ISplashInteractor,
                       private val dispatcherProvider: IDispatcherProvider
-): ViewModel() {
+): ViewModel(), AlertDialogListener {
 
-    private val initialState: AuthState = AuthState.Initial
+    private val _authStateLiveData = MutableLiveData<AuthState>()
 
-    private val mutableAuthStateFlow: MutableStateFlow<AuthState> by lazy {
-        MutableStateFlow(initialState)
-    }
+    private val authStateLiveData: LiveData<AuthState>
+        get() = _authStateLiveData
 
-    private val authStateFlow: StateFlow<AuthState> = mutableAuthStateFlow.asStateFlow()
-
-    fun subscribe(): StateFlow<AuthState> {
-        return authStateFlow
+    fun subscribe(): LiveData<AuthState> {
+        return authStateLiveData
     }
 
     private val viewModelCoroutineScope = CoroutineScope(
@@ -33,7 +30,7 @@ class SplashViewModel(private val interactor: ISplashInteractor,
         })
 
     private fun handleError(error: Throwable) {
-        mutableAuthStateFlow.value = (AuthState.Error(error))
+        _authStateLiveData.value = (AuthState.Error(error))
     }
 
     fun isUserAuth() {
@@ -45,7 +42,7 @@ class SplashViewModel(private val interactor: ISplashInteractor,
 
     private suspend fun getDataFromInteractor(){
         withContext(dispatcherProvider.io()){
-            mutableAuthStateFlow.value = interactor.isUserAuth()
+            _authStateLiveData.postValue(interactor.isUserAuth())
         }
     }
 
@@ -58,7 +55,7 @@ class SplashViewModel(private val interactor: ISplashInteractor,
         cancelJob()
     }
 
-    fun alertBtnOkClicked() {
+    override fun alertDialogBtnOkClicked() {
         isUserAuth()
     }
 

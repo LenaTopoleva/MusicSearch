@@ -2,7 +2,6 @@ package com.lenatopoleva.musicsearch.model.interactor
 
 import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.model.data.RegistrationState
-import com.lenatopoleva.musicsearch.model.data.entity.User
 import com.lenatopoleva.musicsearch.model.repository.IAuthRepository
 
 class AuthInteractor(

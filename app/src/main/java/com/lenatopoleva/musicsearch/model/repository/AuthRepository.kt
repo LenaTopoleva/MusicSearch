@@ -15,5 +15,9 @@ class AuthRepository(private val dataSource: IAuthDataSource): IAuthRepository {
         phone: String, email: String, password: String): Boolean =
         dataSource.registerUser(name, surname, age, phone, email, password)
 
+    override suspend fun logout(email: String): Boolean =
+        dataSource.logout(email)
+
+
 
 }

@@ -13,11 +13,10 @@ import com.google.android.material.textfield.TextInputLayout
 import com.lenatopoleva.musicsearch.R
 import com.lenatopoleva.musicsearch.databinding.FragmentRegistrationBinding
 import com.lenatopoleva.musicsearch.model.data.RegistrationState
-import com.lenatopoleva.musicsearch.utils.ui.AlertDialogFragment
+import com.lenatopoleva.musicsearch.utils.ui.MainActivityAlertDialogFragment
 import com.lenatopoleva.musicsearch.utils.ui.BackButtonListener
 import com.lenatopoleva.musicsearch.utils.ui.InputHelper
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator
-import com.lenatopoleva.musicsearch.utils.ui.alertdialog.AuthAlertDialogFragment
 import com.lenatopoleva.musicsearch.viewmodel.fragment.RegistrationViewModel
 import org.koin.android.ext.android.getKoin
 import java.text.SimpleDateFormat
@@ -133,11 +132,11 @@ class RegistrationFragment : Fragment(), BackButtonListener {
     }
 
 
-    private fun renderData(regState: RegistrationState?) {
+    private fun renderData(regState: RegistrationState) {
         when(regState){
             is RegistrationState.Success -> {
-                if (regState.isRegistrated) model.userIsRegistrated()
-                else showAlertDialog(getString(R.string.oops), getString(R.string.registration_failed))
+                if (regState.doneSuccessful) model.userIsRegistrated()
+                else showAlertDialog(getString(R.string.oops), getString(R.string.reg_error_email_exists))
             }
             is RegistrationState.Error -> showAlertDialog(getString(R.string.error_stub),
                 regState.error.message ?: "")
@@ -145,8 +144,8 @@ class RegistrationFragment : Fragment(), BackButtonListener {
     }
 
     private fun showAlertDialog(title: String, message: String) {
-        AuthAlertDialogFragment.newInstance(title, message).show(childFragmentManager,
-            AlertDialogFragment.DIALOG_TAG)
+        MainActivityAlertDialogFragment.newInstance(title, message).show(childFragmentManager,
+            MainActivityAlertDialogFragment.DIALOG_TAG)
     }
 
     private fun changeTextInputLayout(isValid: Boolean, til: TextInputLayout, errorMessage: String) {
