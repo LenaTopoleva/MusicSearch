@@ -42,9 +42,10 @@ class TrackListAdapter(private var data: List<Media>) : RecyclerView.Adapter<Tra
                 with(binding) {
                     trackNumberTv.text = it.trackNumber.toString()
                     trackNameTv.text = it.trackName
+                    if (position % 2 == 0) binding.root.setBackgroundColor(binding.root.context.getColor(R.color.grey))
+                    else binding.root.setBackgroundColor(binding.root.context.getColor(R.color.white))
                 }
             }
-            if (position % 2 == 0) binding.root.setBackgroundColor(binding.root.context.getColor(R.color.grey))
         }
     }
 

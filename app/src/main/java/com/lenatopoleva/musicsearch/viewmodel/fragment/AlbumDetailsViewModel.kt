@@ -58,7 +58,6 @@ class AlbumDetailsViewModel (private val albumDetailsAlbumsInteractor: IAlbumDet
     override fun handleError(error: Throwable) {
         _loaderLiveData.postValue(false)
         _errorLiveData.postValue(Event(error.message ?: ""))
-        router.exit()
     }
 
     override fun backPressed(): Boolean {

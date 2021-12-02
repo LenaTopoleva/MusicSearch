@@ -30,9 +30,9 @@ fun Media.mapToTrack(): Track {
         artistName = this.artistName,
         collectionName = this.collectionName,
         artworkUrl100 = this.artworkUrl100,
-        trackName = this.trackName,
-        trackNumber = this.trackNumber,
-        trackTimeMillis = this.trackTimeMillis
+        trackName = this.trackName ?: "",
+        trackNumber = this.trackNumber ?: 0,
+        trackTimeMillis = this.trackTimeMillis ?: 0
     )
 }
 

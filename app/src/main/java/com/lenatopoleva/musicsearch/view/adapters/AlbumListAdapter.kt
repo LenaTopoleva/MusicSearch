@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.lenatopoleva.musicsearch.R
 import com.lenatopoleva.musicsearch.databinding.ItemAlbumBinding
 import com.lenatopoleva.musicsearch.model.data.Media
 import com.lenatopoleva.musicsearch.model.data.entity.Album
@@ -47,7 +48,7 @@ class AlbumListAdapter(
                 with(binding) {
                     artistNameTv.text = it.artistName
                     collectionNameTv.text = it.collectionName
-                    trackCountTv.text = trackCountTv.text.toString().plus(it.trackCount.toString())
+                    trackCountTv.text = root.context.getString(R.string.tracks).plus(it.trackCount.toString())
                     imageLoader.loadInto(it.artworkUrl100, artworkIv)
                     root.setOnClickListener{onItemClicked(album.collectionId)}
                 }

@@ -16,9 +16,9 @@ data class Track
      val releaseDate : String = "",
      val primaryGenreName : String = "",
 
-     val trackName: String?,
-     val trackNumber: Int?,
-     val trackTimeMillis: Long? = 0,
-     val trackPrice: Double? = 0.0
+     val trackName: String,
+     val trackNumber: Int,
+     val trackTimeMillis: Long = 0,
+     val trackPrice: Double = 0.0
 )
 
