@@ -112,12 +112,12 @@ class RegistrationFragment : Fragment(), BackButtonListener {
                 openDatePicker()
             }
             signUpBtn.setOnClickListener {
-                val name = name.editText.toString().trim()
-                val surname = surname.editText.toString().trim()
-                val age = age.editText.toString().trim()
-                val phone = phone.editText.toString().trim()
-                val email = email.editText.toString().trim()
-                val password = password.editText.toString().trim()
+                val name = name.editText?.text.toString().trim()
+                val surname = surname.editText?.text.toString().trim()
+                val age = age.editText?.text.toString().trim()
+                val phone = phone.editText?.text.toString().trim()
+                val email = email.editText?.text.toString().trim()
+                val password = password.editText?.text.toString().trim()
                 model.btnSignUpClicked(name, surname, age, phone, email, password)
             }
         }

@@ -7,7 +7,6 @@ import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
 import com.lenatopoleva.musicsearch.model.interactor.fragment.IAlbumDetailsInteractor
 import com.lenatopoleva.musicsearch.utils.Event
 import com.lenatopoleva.musicsearch.viewmodel.base.BaseViewModel
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.terrakok.cicerone.Router

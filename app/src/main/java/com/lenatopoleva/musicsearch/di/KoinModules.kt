@@ -3,11 +3,17 @@ package com.lenatopoleva.musicsearch.di
 import android.widget.ImageView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.lambdapioneer.argon2kt.Argon2Kt
+import com.lenatopoleva.musicsearch.model.datasource.db.Database
 import com.lenatopoleva.musicsearch.model.datasource.db.RoomDatabase
+import com.lenatopoleva.musicsearch.model.datasource.db.dao.AlbumsDao
+import com.lenatopoleva.musicsearch.model.datasource.db.dao.TracksDao
+import com.lenatopoleva.musicsearch.model.datasource.db.dao.UsersDao
 import com.lenatopoleva.musicsearch.model.datasource.network.BaseInterceptor
 import com.lenatopoleva.musicsearch.model.datasource.network.RetrofitNetwork
 import com.lenatopoleva.musicsearch.model.dispatchers.DispatcherProvider
@@ -57,9 +63,17 @@ val application = module {
             .create()
     }
 
+    single { Room.databaseBuilder(get(), Database::class.java, "MusicSearchDB").build() }
+    single<AlbumsDao> { get<Database>().albumsDao() }
+    single<TracksDao> { get<Database>().tracksDao() }
+    single<UsersDao> { get<Database>().usersDao() }
+
     single<IRepository> { Repository(RetrofitNetwork(get())) }
-    single<IRepositoryLocal> { RepositoryLocal(RoomDatabase()) }
-    single<IAuthRepository> { AuthRepository(RoomDatabase()) }
+    single<IRepositoryLocal> { RepositoryLocal(RoomDatabase(get(), get(), get(), get())) }
+    single<IAuthRepository> { AuthRepository(RoomDatabase(get(), get(), get(), get())) }
+
+    //Password hashing
+    single<Argon2Kt> { Argon2Kt()}
 
     single<IDispatcherProvider> { DispatcherProvider() }
 

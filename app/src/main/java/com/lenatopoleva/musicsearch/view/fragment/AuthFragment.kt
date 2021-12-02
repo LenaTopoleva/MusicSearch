@@ -77,8 +77,8 @@ class AuthFragment: Fragment(), BackButtonListener {
     private fun setButtonClickListeners(){
         with(binding){
             loginBtn.setOnClickListener {
-                val email = email.editText.toString().trim()
-                val password = password.editText.toString().trim()
+                val email = email.editText?.text.toString().trim()
+                val password = password.editText?.text.toString().trim()
                 model.btnLogInClicked(email, password)
             }
             registrationBtn.setOnClickListener { model.btnRegistrationClicked() }
