@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
-import com.lenatopoleva.musicsearch.model.interactor.IAuthInteractor
+import com.lenatopoleva.musicsearch.model.interactor.fragment.IAuthInteractor
 import com.lenatopoleva.musicsearch.navigation.Screens
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator.Companion.EMAIL
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator.Companion.EMAIL_PATTERN

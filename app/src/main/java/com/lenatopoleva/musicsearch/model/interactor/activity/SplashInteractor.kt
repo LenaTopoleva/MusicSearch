@@ -1,4 +1,4 @@
-package com.lenatopoleva.musicsearch.model.interactor
+package com.lenatopoleva.musicsearch.model.interactor.activity
 
 import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.model.repository.IAuthRepository

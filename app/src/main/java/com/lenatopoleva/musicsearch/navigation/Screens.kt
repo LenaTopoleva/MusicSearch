@@ -1,5 +1,6 @@
 package com.lenatopoleva.musicsearch.navigation
 
+import com.lenatopoleva.musicsearch.view.fragment.AlbumDetailsFragment
 import com.lenatopoleva.musicsearch.view.fragment.AlbumsFragment
 import com.lenatopoleva.musicsearch.view.fragment.AuthFragment
 import com.lenatopoleva.musicsearch.view.fragment.RegistrationFragment
@@ -20,7 +21,7 @@ class Screens {
     }
 
     class AlbumDetailsScreen(val albumId: Int): SupportAppScreen() {
-//        override fun getFragment() = AlbumDetailsFragment.newInstance(albumId)
+        override fun getFragment() = AlbumDetailsFragment.newInstance(albumId)
     }
 
 }

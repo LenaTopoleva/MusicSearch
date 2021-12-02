@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
-import com.lenatopoleva.musicsearch.model.interactor.ISplashInteractor
+import com.lenatopoleva.musicsearch.model.interactor.activity.ISplashInteractor
 import com.lenatopoleva.musicsearch.utils.ui.alertdialog.AlertDialogListener
 import kotlinx.coroutines.*
 

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackListRv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artwork_iv" />
+
+    <ImageView
+        android:id="@+id/artwork_iv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/album_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/album_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/album"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/artist_tv"
+        app:layout_constraintStart_toEndOf="@+id/artwork_iv"
+        app:layout_constraintTop_toTopOf="@id/artwork_iv" />
+
+    <TextView
+        android:id="@+id/artist_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/artist"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/genre_tv"
+        app:layout_constraintStart_toEndOf="@+id/artwork_iv"
+        app:layout_constraintTop_toBottomOf="@+id/album_tv" />
+
+    <TextView
+        android:id="@+id/genre_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/genre"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/country_tv"
+        app:layout_constraintStart_toEndOf="@+id/artwork_iv"
+        app:layout_constraintTop_toBottomOf="@+id/artist_tv" />
+
+    <TextView
+        android:id="@+id/country_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/country"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/release_date_tv"
+        app:layout_constraintStart_toEndOf="@+id/artwork_iv"
+        app:layout_constraintTop_toBottomOf="@+id/genre_tv" />
+
+    <TextView
+        android:id="@+id/release_date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/release_date"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/artwork_iv"
+        app:layout_constraintStart_toEndOf="@+id/artwork_iv"
+        app:layout_constraintTop_toBottomOf="@+id/country_tv" />
+
+    <TextView
+        android:id="@+id/album_info_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="textStart"
+        app:layout_constraintBottom_toTopOf="@+id/artist_info_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/barrier"
+        app:layout_constraintTop_toTopOf="@id/artwork_iv" />
+
+    <TextView
+        android:id="@+id/artist_info_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="textStart"
+        app:layout_constraintBottom_toTopOf="@+id/genre_info_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/barrier"
+        app:layout_constraintTop_toBottomOf="@+id/album_info_tv" />
+
+    <TextView
+        android:id="@+id/genre_info_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/country_info_tv"
+        app:layout_constraintStart_toEndOf="@+id/barrier"
+        app:layout_constraintTop_toBottomOf="@+id/artist_info_tv" />
+
+    <TextView
+        android:id="@+id/country_info_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/release_date_info_tv"
+        app:layout_constraintStart_toEndOf="@+id/barrier"
+        app:layout_constraintTop_toBottomOf="@+id/genre_info_tv" />
+
+    <TextView
+        android:id="@+id/release_date_info_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/artwork_iv"
+        app:layout_constraintStart_toEndOf="@+id/barrier"
+        app:layout_constraintTop_toBottomOf="@+id/country_info_tv" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="album_tv, artist_tv, genre_tv, country_tv, release_date_tv"
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="122dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/views"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="trackListRv,artwork_iv,album_tv,artist_tv,genre_tv,
+            country_tv,release_date_tv,album_info_tv,artist_info_tv,genre_info_tv,country_info_tv,
+            release_date_info_tv,barrier" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.model.data.Media
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
-import com.lenatopoleva.musicsearch.model.interactor.IAlbumsInteractor
+import com.lenatopoleva.musicsearch.model.interactor.fragment.IAlbumsInteractor
 import com.lenatopoleva.musicsearch.navigation.Screens
 import com.lenatopoleva.musicsearch.utils.Event
 import com.lenatopoleva.musicsearch.viewmodel.base.BaseViewModel

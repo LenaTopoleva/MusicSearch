@@ -47,6 +47,7 @@ class AlbumListAdapter(
                 with(binding) {
                     artistNameTv.text = it.artistName
                     collectionNameTv.text = it.collectionName
+                    trackCountTv.text = trackCountTv.text.toString().plus(it.trackCount.toString())
                     imageLoader.loadInto(it.artworkUrl100, artworkIv)
                     root.setOnClickListener{onItemClicked(album.collectionId)}
                 }
