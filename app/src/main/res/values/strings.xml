@@ -45,5 +45,6 @@
     <string name="tracks">Tracks:\u0020</string>
     <string name="saving">Saving...</string>
     <string name="searching">Searching in database...</string>
+    <string name="loging_out">Loging out...</string>
 
 </resources>

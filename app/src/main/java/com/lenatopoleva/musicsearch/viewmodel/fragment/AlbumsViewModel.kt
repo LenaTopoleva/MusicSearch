@@ -44,6 +44,9 @@ class AlbumsViewModel (private val albumsInteractor: IAlbumsInteractor,
     private var _bottomSheetErrorLiveData = MutableLiveData<String>()
     val bottomSheetErrorLiveData: LiveData<String> = _bottomSheetErrorLiveData
 
+    private val _logoutProgressLiveData = MutableLiveData<Event<String>>()
+    val logoutProgressLiveData : LiveData<Event<String>> = _logoutProgressLiveData
+
 
     fun getData(title: String, isOnline: Boolean) {
         _loaderLiveData.value = true
@@ -77,6 +80,7 @@ class AlbumsViewModel (private val albumsInteractor: IAlbumsInteractor,
 
     private suspend fun logOut(email: String){
         withContext(dispatcherProvider.io()){
+            _logoutProgressLiveData.postValue(Event(""))
             val doneSuccessful = albumsInteractor.logout(email)
             println("logout done")
             if (doneSuccessful) {

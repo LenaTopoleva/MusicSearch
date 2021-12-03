@@ -13,6 +13,7 @@ import com.lenatopoleva.musicsearch.model.imageloader.IImageLoader
 import com.lenatopoleva.musicsearch.utils.Event
 import com.lenatopoleva.musicsearch.utils.network.isOnline
 import com.lenatopoleva.musicsearch.utils.ui.BackButtonListener
+import com.lenatopoleva.musicsearch.utils.ui.toast
 import com.lenatopoleva.musicsearch.view.adapters.AlbumListAdapter
 import com.lenatopoleva.musicsearch.view.base.BaseFragment
 import com.lenatopoleva.musicsearch.viewmodel.fragment.AlbumsViewModel
@@ -39,6 +40,7 @@ class AlbumsFragment(): BaseFragment(), BackButtonListener {
     private val logoutFailObserver = Observer<Event<String>> { event -> event.getContentIfNotHandled()?.let { showLogoutFailAlertDialog(it) } }
     private val noMediaAlertDialogObserver = Observer<Event<String>> { event -> event.getContentIfNotHandled()?.let { showNoMediaAlertDialog(it) }}
     private val errorObserver = Observer<Event<String>> { event -> event.getContentIfNotHandled()?.let { showAlertDialog(getString(R.string.error_stub), it) }}
+    private val logoutProgressObserver = Observer<Event<String>> { event -> event.getContentIfNotHandled()?.let {  requireContext().toast(getString(R.string.loging_out)) }}
 
     private var _binding: FragmentAlbumsBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
@@ -78,6 +80,7 @@ class AlbumsFragment(): BaseFragment(), BackButtonListener {
         model.noMediaAlertDialogLiveData.observe(viewLifecycleOwner, noMediaAlertDialogObserver)
         model.logoutFailAlertDialogLiveData.observe(viewLifecycleOwner, logoutFailObserver)
         model.errorLiveData.observe(viewLifecycleOwner, errorObserver)
+        model.logoutProgressLiveData.observe(viewLifecycleOwner, logoutProgressObserver)
     }
 
     override fun onResume() {
