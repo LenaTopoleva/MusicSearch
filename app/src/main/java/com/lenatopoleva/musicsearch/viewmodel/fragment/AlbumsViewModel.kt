@@ -2,8 +2,8 @@ package com.lenatopoleva.musicsearch.viewmodel.fragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.model.data.Media
+import com.lenatopoleva.musicsearch.model.data.entity.User
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
 import com.lenatopoleva.musicsearch.model.interactor.fragment.IAlbumsInteractor
 import com.lenatopoleva.musicsearch.navigation.Screens
@@ -19,31 +19,31 @@ class AlbumsViewModel (private val albumsInteractor: IAlbumsInteractor,
 ): BaseViewModel() {
 
     private var _isAccountBtnClickedLiveData = MutableLiveData<Event<Boolean>>()
-    val isAccountBtnClickedLiveData: LiveData<Event<Boolean>>
-        get() = _isAccountBtnClickedLiveData
+    val isAccountBtnClickedLiveData: LiveData<Event<Boolean>> = _isAccountBtnClickedLiveData
 
-    private var _authUserLiveData = MutableLiveData<AuthState>()
-    val authUserLiveData: LiveData<AuthState>
-        get() = _authUserLiveData
+    private var _authUserLiveData = MutableLiveData<User>()
+    val authUserLiveData: LiveData<User> = _authUserLiveData
+
+    private var _authUserNotFoundLiveData = MutableLiveData<Boolean>()
+    val authUserNotFoundLiveData: LiveData<Boolean> = _authUserNotFoundLiveData
 
     private var _logoutFailAlertDialogLiveData = MutableLiveData<Event<String>>()
-    val logoutFailAlertDialogLiveData: LiveData<Event<String>>
-        get() = _logoutFailAlertDialogLiveData
+    val logoutFailAlertDialogLiveData: LiveData<Event<String>> = _logoutFailAlertDialogLiveData
     
     private var _loaderLiveData = MutableLiveData<Boolean>()
-    val loaderLiveData: LiveData<Boolean>
-        get() = _loaderLiveData
+    val loaderLiveData: LiveData<Boolean> = _loaderLiveData
 
     private var _mediaListLiveData = MutableLiveData<List<Media>>()
-    val mediaListLiveData: LiveData<List<Media>>
-        get() = _mediaListLiveData
+    val mediaListLiveData: LiveData<List<Media>> = _mediaListLiveData
 
     private var _noMediaAlertDialogLiveData = MutableLiveData<Event<String>>()
-    val noMediaAlertDialogLiveData: LiveData<Event<String>>
-        get() = _noMediaAlertDialogLiveData
+    val noMediaAlertDialogLiveData: LiveData<Event<String>> = _noMediaAlertDialogLiveData
 
-    val errorLiveData: LiveData<Event<String>>
-        get() = _errorLiveData
+    val errorLiveData: LiveData<Event<String>> = _errorLiveData
+
+    private var _bottomSheetErrorLiveData = MutableLiveData<String>()
+    val bottomSheetErrorLiveData: LiveData<String> = _bottomSheetErrorLiveData
+
 
     fun getData(title: String, isOnline: Boolean) {
         _loaderLiveData.value = true
@@ -99,7 +99,13 @@ class AlbumsViewModel (private val albumsInteractor: IAlbumsInteractor,
 
     private suspend fun getAuthUserFromInteractor() {
         withContext(dispatcherProvider.io()){
-            _authUserLiveData.postValue(albumsInteractor.getAuthUser())
+            try {
+                val authUser = albumsInteractor.getAuthUser()
+                authUser?.let { _authUserLiveData.postValue(it) }
+                    ?: _authUserNotFoundLiveData.postValue(true)
+            } catch (error: Throwable){
+                _bottomSheetErrorLiveData.postValue(error.message)
+            }
         }
     }
 

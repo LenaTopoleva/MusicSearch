@@ -17,19 +17,15 @@ class AlbumDetailsViewModel (private val albumDetailsAlbumsInteractor: IAlbumDet
 ): BaseViewModel() {
 
     private var _loaderLiveData = MutableLiveData<Boolean>()
-    val loaderLiveData: LiveData<Boolean>
-        get() = _loaderLiveData
+    val loaderLiveData: LiveData<Boolean> = _loaderLiveData
 
     private var _mediaListLiveData = MutableLiveData<List<Media>>()
-    val mediaListLiveData: LiveData<List<Media>>
-        get() = _mediaListLiveData
+    val mediaListLiveData: LiveData<List<Media>> = _mediaListLiveData
 
     private var _noMediaAlertDialogLiveData = MutableLiveData<Event<String>>()
-    val noMediaAlertDialogLiveData: LiveData<Event<String>>
-        get() = _noMediaAlertDialogLiveData
+    val noMediaAlertDialogLiveData: LiveData<Event<String>> = _noMediaAlertDialogLiveData
 
-    val errorLiveData: LiveData<Event<String>>
-        get() = _errorLiveData
+    val errorLiveData: LiveData<Event<String>> = _errorLiveData
 
     fun getData(albumId: Int, isOnline: Boolean) {
         _loaderLiveData.value = true

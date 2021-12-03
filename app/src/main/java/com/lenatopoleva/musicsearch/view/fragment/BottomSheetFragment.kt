@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lenatopoleva.musicsearch.R
 import com.lenatopoleva.musicsearch.databinding.FragmentAlbumsBottomSheetBinding
-import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.model.data.entity.User
 import com.lenatopoleva.musicsearch.viewmodel.fragment.AlbumsViewModel
 import org.koin.android.ext.android.getKoin
@@ -30,7 +29,12 @@ class BottomSheetFragment: BottomSheetDialogFragment() {
         ViewModelProvider(requireParentFragment(), getKoin().get())[AlbumsViewModel::class.java]
     }
 
-    private val authUserObserver = Observer<AuthState> { renderData(it) }
+    private val authUserObserver = Observer<User> { setupUi(it) }
+    private val userNotFoundObserver = Observer<Boolean> { showError(getString(R.string.user_not_found)) }
+    private val bottomSheetErrorObserver = Observer<String?> {
+        val message = it ?: getString(R.string.error_stub)
+        showError(message)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,20 +50,13 @@ class BottomSheetFragment: BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         model.authUserLiveData.observe(viewLifecycleOwner, authUserObserver)
+        model.authUserNotFoundLiveData.observe(viewLifecycleOwner, userNotFoundObserver)
+        model.bottomSheetErrorLiveData.observe(viewLifecycleOwner, bottomSheetErrorObserver)
     }
 
     override fun onResume() {
         super.onResume()
         model.getAuthUser()
-    }
-
-    private fun renderData(authState: AuthState){
-        when(authState){
-            is AuthState.Success -> {
-                authState.data?.let { setupUi(it) } ?: showError(getString(R.string.user_not_found))
-            }
-            is AuthState.Error -> showError(authState.error.message ?: getString(R.string.error_stub))
-        }
     }
 
     private fun setupUi(user: User){

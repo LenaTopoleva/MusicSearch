@@ -1,13 +1,14 @@
 package com.lenatopoleva.musicsearch.view.activity
 
 import android.content.Context
+import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.lenatopoleva.musicsearch.R
-import com.lenatopoleva.musicsearch.model.data.AuthState
+import com.lenatopoleva.musicsearch.utils.Event
 import com.lenatopoleva.musicsearch.utils.ui.MainActivityAlertDialogFragment
 import com.lenatopoleva.musicsearch.utils.ui.alertdialog.SplashActivityAlertDialogFragment
 import com.lenatopoleva.musicsearch.viewmodel.activity.SplashViewModel
@@ -19,32 +20,25 @@ class SplashActivity: AppCompatActivity() {
         ViewModelProvider(this, getKoin().get()).get(SplashViewModel::class.java)
     }
 
-    private val authStateObserver = Observer<AuthState> { renderData(it) }
+    private val authUserObserver = Observer<Event<Boolean>> { event ->
+        event.getContentIfNotHandled()?.let { startMainActivity(it) } }
+    private val errorObserver = Observer<Event<String>> { event -> event.getContentIfNotHandled()?.let {
+        showAlertDialog(getString(R.string.error_stub), it) }}
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        model.subscribe().observe(this, authStateObserver)
+        model.authUserLiveDate.observe(this, authUserObserver)
+        model.errorLiveData.observe(this, errorObserver)
         return super.onCreateView(name, context, attrs)
     }
 
-    override fun onResume() {
-        super.onResume()
-        isUserAuth()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            isUserAuth()
+        }
     }
 
     private fun isUserAuth() = model.isUserAuth()
-
-    private fun renderData(authState: AuthState){
-        when(authState) {
-            is AuthState.Success -> {
-                authState.data?.let { startMainActivity(true) }
-                    ?: startMainActivity(false)
-            }
-            is AuthState.Error ->  {
-                showAlertDialog(getString(R.string.error_stub),
-                    authState.error.message ?: "")
-            }
-        }
-    }
 
     private fun startMainActivity(isAuth: Boolean){
         MainActivity.start(this, isAuth)
@@ -52,7 +46,8 @@ class SplashActivity: AppCompatActivity() {
     }
 
     private fun showAlertDialog(title: String, message: String) {
-        SplashActivityAlertDialogFragment. newInstance(title, message).show(supportFragmentManager, MainActivityAlertDialogFragment.DIALOG_TAG)
+        SplashActivityAlertDialogFragment.newInstance(title, message).show(supportFragmentManager,
+            MainActivityAlertDialogFragment.DIALOG_TAG)
     }
 
 }

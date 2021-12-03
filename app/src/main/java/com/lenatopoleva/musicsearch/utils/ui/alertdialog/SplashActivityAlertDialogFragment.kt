@@ -14,11 +14,6 @@ class SplashActivityAlertDialogFragment : MainActivityAlertDialogFragment() {
         ViewModelProvider(requireActivity(), getKoin().get())[SplashViewModel::class.java]
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        (model as? AlertDialogListener)?.alertDialogBtnOkClicked()
-    }
-
     companion object{
         fun newInstance(title: String, message: String): SplashActivityAlertDialogFragment {
             val args = Bundle()

@@ -23,21 +23,27 @@ class RegistrationViewModel(
 ): ViewModel() {
 
     private val _nameValidationLiveData = MutableLiveData<Boolean>()
-    private val _surnameValidationLiveData = MutableLiveData<Boolean>()
-    private val _ageValidationLiveData = MutableLiveData<Boolean>()
-    private val _phoneValidationLiveData = MutableLiveData<Boolean>()
-    private val _emailValidationLiveData = MutableLiveData<Boolean>()
-    private val _passwordValidationLiveData = MutableLiveData<Boolean>()
-    private val _birthDateLiveData = MutableLiveData<String>()
-    private val _registrationStateLiveData = MutableLiveData<RegistrationState>()
-
     val nameValidationLiveData : LiveData<Boolean> = _nameValidationLiveData
+
+    private val _surnameValidationLiveData = MutableLiveData<Boolean>()
     val surnameValidationLiveData : LiveData<Boolean> = _surnameValidationLiveData
+
+    private val _ageValidationLiveData = MutableLiveData<Boolean>()
     val ageValidationLiveData : LiveData<Boolean> = _ageValidationLiveData
+
+    private val _phoneValidationLiveData = MutableLiveData<Boolean>()
     val phoneValidationLiveData : LiveData<Boolean> = _phoneValidationLiveData
+
+    private val _emailValidationLiveData = MutableLiveData<Boolean>()
     val emailValidationLiveData : LiveData<Boolean> = _emailValidationLiveData
+
+    private val _passwordValidationLiveData = MutableLiveData<Boolean>()
     val passwordValidationLiveData : LiveData<Boolean> = _passwordValidationLiveData
+
+    private val _birthDateLiveData = MutableLiveData<String>()
     val birthDateLiveData : LiveData<String> = _birthDateLiveData
+
+    private val _registrationStateLiveData = MutableLiveData<RegistrationState>()
     val registrationStateLiveData : LiveData<RegistrationState> = _registrationStateLiveData
 
     protected val viewModelCoroutineScope = CoroutineScope(

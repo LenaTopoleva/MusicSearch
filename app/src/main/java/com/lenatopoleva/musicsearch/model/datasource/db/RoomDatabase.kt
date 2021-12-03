@@ -53,7 +53,6 @@ class RoomDatabase(private val usersDao: UsersDao,
     override suspend fun getAuthUser(): User? =
         usersDao.getAuthUser()
 
-
     override suspend fun authUser(email: String, password: String): User? {
         val user: User? = usersDao.getUserWithEmail(email)
         user?.let {

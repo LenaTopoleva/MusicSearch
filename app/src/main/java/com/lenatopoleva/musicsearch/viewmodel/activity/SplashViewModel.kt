@@ -3,9 +3,10 @@ package com.lenatopoleva.musicsearch.viewmodel.activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lenatopoleva.musicsearch.model.data.AuthState
+import com.lenatopoleva.musicsearch.model.data.entity.User
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
 import com.lenatopoleva.musicsearch.model.interactor.activity.ISplashInteractor
+import com.lenatopoleva.musicsearch.utils.Event
 import com.lenatopoleva.musicsearch.utils.ui.alertdialog.AlertDialogListener
 import kotlinx.coroutines.*
 
@@ -13,14 +14,11 @@ class SplashViewModel(private val interactor: ISplashInteractor,
                       private val dispatcherProvider: IDispatcherProvider
 ): ViewModel(), AlertDialogListener {
 
-    private val _authStateLiveData = MutableLiveData<AuthState>()
+    private val _authUserLiveDate = MutableLiveData<Event<Boolean>>()
+    val authUserLiveDate: LiveData<Event<Boolean>> = _authUserLiveDate
 
-    private val authStateLiveData: LiveData<AuthState>
-        get() = _authStateLiveData
-
-    fun subscribe(): LiveData<AuthState> {
-        return authStateLiveData
-    }
+    private var _errorLiveData = MutableLiveData<Event<String>>()
+    val errorLiveData: LiveData<Event<String>> = _errorLiveData
 
     private val viewModelCoroutineScope = CoroutineScope(
         Dispatchers.Main
@@ -30,7 +28,7 @@ class SplashViewModel(private val interactor: ISplashInteractor,
         })
 
     private fun handleError(error: Throwable) {
-        _authStateLiveData.value = (AuthState.Error(error))
+        _errorLiveData.postValue(Event(error.message ?: ""))
     }
 
     fun isUserAuth() {
@@ -42,7 +40,9 @@ class SplashViewModel(private val interactor: ISplashInteractor,
 
     private suspend fun getDataFromInteractor(){
         withContext(dispatcherProvider.io()){
-            _authStateLiveData.postValue(interactor.isUserAuth())
+           val authUser: User? = interactor.isUserAuth()
+            authUser?.let { _authUserLiveDate.postValue(Event(true)) }
+                ?: _authUserLiveDate.postValue(Event(false))
         }
     }
 

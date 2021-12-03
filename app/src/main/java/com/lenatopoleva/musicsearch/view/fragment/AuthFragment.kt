@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.lenatopoleva.musicsearch.R
 import com.lenatopoleva.musicsearch.databinding.FragmentAuthBinding
-import com.lenatopoleva.musicsearch.model.data.AuthState
+import com.lenatopoleva.musicsearch.utils.Event
 import com.lenatopoleva.musicsearch.utils.ui.BackButtonListener
 import com.lenatopoleva.musicsearch.utils.ui.MainActivityAlertDialogFragment
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator
@@ -26,9 +26,12 @@ class AuthFragment: Fragment(), BackButtonListener {
         ViewModelProvider(this, getKoin().get())[AuthViewModel::class.java]
     }
 
-    private val authStateObserver = Observer<AuthState> { renderData(it)  }
     private val emailObserver = Observer<Boolean> { changeEmailTextInputLayout(it) }
     private val passwordObserver = Observer<Boolean> { changePasswordTextInputLayout(it) }
+    private val userNotRegistratedAlertDialogObserver =
+        Observer<Event<String>> { event -> event.getContentIfNotHandled()?.let { showUserNotRegistratedAlerdDialog() }}
+    private val errorAlertDialogObserver =
+        Observer<Event<String>> { event -> event.getContentIfNotHandled()?.let { showAlertDialog(getString(R.string.error_stub), it) }}
 
     private var _binding: FragmentAuthBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
@@ -50,7 +53,8 @@ class AuthFragment: Fragment(), BackButtonListener {
         super.onViewCreated(view, savedInstanceState)
         model.emailValidationLiveData.observe(viewLifecycleOwner, emailObserver)
         model.passwordValidationLiveData.observe(viewLifecycleOwner, passwordObserver)
-        model.authStateLiveData.observe(viewLifecycleOwner, authStateObserver)
+        model.userNotRegistratedAlertDialogLiveData.observe(viewLifecycleOwner, userNotRegistratedAlertDialogObserver)
+        model.errorAlertDialogLiveData.observe(viewLifecycleOwner, errorAlertDialogObserver)
     }
 
     override fun onResume() {
@@ -85,17 +89,8 @@ class AuthFragment: Fragment(), BackButtonListener {
         }
     }
 
-
-    private fun renderData(authState: AuthState?) {
-        when(authState){
-            is AuthState.Success -> {
-                val user = authState.data
-                user?.let { model.userIsAuth() } ?: showAlertDialog(getString(R.string.error_stub),
-                    getString(R.string.user_is_not_registrated))
-            }
-            is AuthState.Error -> showAlertDialog(getString(R.string.error_stub),
-        authState.error.message ?: "")
-        }
+    private fun showUserNotRegistratedAlerdDialog(){
+        showAlertDialog(getString(R.string.error_stub), getString(R.string.user_is_not_registrated))
     }
 
     private fun showAlertDialog(title: String, message: String) {
@@ -113,7 +108,6 @@ class AuthFragment: Fragment(), BackButtonListener {
             binding.password.error = getString(R.string.password_error)
         } else binding.password.error = null
     }
-
 
     override fun backPressed() = model.backPressed()
 

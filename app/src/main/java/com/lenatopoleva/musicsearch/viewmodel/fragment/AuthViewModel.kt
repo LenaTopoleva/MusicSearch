@@ -3,10 +3,11 @@ package com.lenatopoleva.musicsearch.viewmodel.fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lenatopoleva.musicsearch.model.data.AuthState
+import com.lenatopoleva.musicsearch.model.data.entity.User
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
 import com.lenatopoleva.musicsearch.model.interactor.fragment.IAuthInteractor
 import com.lenatopoleva.musicsearch.navigation.Screens
+import com.lenatopoleva.musicsearch.utils.Event
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator.Companion.EMAIL
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator.Companion.EMAIL_PATTERN
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator.Companion.PASSWORD
@@ -23,17 +24,16 @@ class AuthViewModel(
 ): ViewModel() {
 
     private val _emailValidationLiveData = MutableLiveData<Boolean>()
+    val emailValidationLiveData : LiveData<Boolean> = _emailValidationLiveData
+
     private val _passwordValidationLiveData = MutableLiveData<Boolean>()
-    private val _authStateLiveData = MutableLiveData<AuthState>()
+    val passwordValidationLiveData : LiveData<Boolean> = _passwordValidationLiveData
 
-    val emailValidationLiveData : LiveData<Boolean>
-        get() = _emailValidationLiveData
+    private val _userNotRegistratedAlertDialogLiveData = MutableLiveData<Event<String>>()
+    val userNotRegistratedAlertDialogLiveData : LiveData<Event<String>> = _userNotRegistratedAlertDialogLiveData
 
-    val passwordValidationLiveData : LiveData<Boolean>
-        get() = _passwordValidationLiveData
-
-    val authStateLiveData : LiveData<AuthState>
-        get() = _authStateLiveData
+    private val _errorAlertDialogLiveData = MutableLiveData<Event<String>>()
+    val errorAlertDialogLiveData : LiveData<Event<String>> = _errorAlertDialogLiveData
 
     protected val viewModelCoroutineScope = CoroutineScope(
         Dispatchers.Main
@@ -47,7 +47,7 @@ class AuthViewModel(
     }
 
     private fun handleError(error: Throwable){
-        _authStateLiveData.postValue(AuthState.Error(error))
+        _errorAlertDialogLiveData.postValue(Event(error.message ?: ""))
     }
 
     fun validate(text: String, type: String) {
@@ -78,12 +78,12 @@ class AuthViewModel(
 
     private suspend fun authenticateUser(email: String, password: String){
         withContext(dispatcherProvider.io()){
-            _authStateLiveData.postValue(authInteractor.authUser(email, password))
+            val authUser: User? = authInteractor.authUser(email, password)
+            authUser?.let { userIsAuth() } ?: _userNotRegistratedAlertDialogLiveData.postValue(Event(""))
         }
     }
 
-
-    fun userIsAuth() {
+    private fun userIsAuth() {
         router.replaceScreen(Screens.AlbumsScreen())
     }
 

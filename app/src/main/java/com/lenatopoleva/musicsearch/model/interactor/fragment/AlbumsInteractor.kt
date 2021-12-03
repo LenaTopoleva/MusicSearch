@@ -1,7 +1,7 @@
 package com.lenatopoleva.musicsearch.model.interactor.fragment
 
-import com.lenatopoleva.musicsearch.model.data.AuthState
 import com.lenatopoleva.musicsearch.model.data.Media
+import com.lenatopoleva.musicsearch.model.data.entity.User
 import com.lenatopoleva.musicsearch.model.repository.IAuthRepository
 import com.lenatopoleva.musicsearch.model.repository.IRepository
 import com.lenatopoleva.musicsearch.model.repository.IRepositoryLocal
@@ -23,8 +23,8 @@ class AlbumsInteractor (
         return result
     }
 
-    override suspend fun getAuthUser(): AuthState =
-        AuthState.Success(repositoryAuth.getAuthUser())
+    override suspend fun getAuthUser(): User? =
+        repositoryAuth.getAuthUser()
 
     override suspend fun logout(email: String): Boolean =
         repositoryAuth.logout(email)
