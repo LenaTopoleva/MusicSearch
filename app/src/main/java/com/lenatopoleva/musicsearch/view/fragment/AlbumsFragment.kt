@@ -96,6 +96,7 @@ class AlbumsFragment(): BaseFragment(), BackButtonListener {
                     isNetworkAvailable = isOnline(requireActivity().applicationContext)
                     model.getData(query.trim(), isNetworkAvailable)
                 }
+                searchView.clearFocus()
                 return true
             }
             override fun onQueryTextChange(p0: String?): Boolean = true
