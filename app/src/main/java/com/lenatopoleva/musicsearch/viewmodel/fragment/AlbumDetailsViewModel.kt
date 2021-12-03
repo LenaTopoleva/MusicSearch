@@ -25,7 +25,7 @@ class AlbumDetailsViewModel (private val albumDetailsAlbumsInteractor: IAlbumDet
     private var _noMediaAlertDialogLiveData = MutableLiveData<Event<String>>()
     val noMediaAlertDialogLiveData: LiveData<Event<String>> = _noMediaAlertDialogLiveData
 
-    val errorLiveData: LiveData<Event<String>> = _errorLiveData
+    val errorLiveData: LiveData<Event<String>> = _errorBaseLiveData
 
     fun getData(albumId: Int, isOnline: Boolean) {
         _loaderLiveData.value = true
@@ -52,7 +52,7 @@ class AlbumDetailsViewModel (private val albumDetailsAlbumsInteractor: IAlbumDet
 
     override fun handleError(error: Throwable) {
         _loaderLiveData.postValue(false)
-        _errorLiveData.postValue(Event(error.message ?: ""))
+        _errorBaseLiveData.postValue(Event(error.message ?: ""))
     }
 
     override fun backPressed(): Boolean {

@@ -14,9 +14,11 @@ abstract class BaseViewModel : ViewModel() {
             handleError(throwable)
         })
 
-    var _errorLiveData = MutableLiveData<Event<String>>()
+    var _errorBaseLiveData = MutableLiveData<Event<String>>()
 
-    abstract fun handleError(error: Throwable)
+    open fun handleError(error: Throwable){
+        _errorBaseLiveData.postValue(Event(error.message ?: ""))
+    }
 
     fun cancelJob() {
         viewModelCoroutineScope.coroutineContext.cancelChildren()

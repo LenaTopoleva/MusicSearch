@@ -39,7 +39,7 @@ class AlbumsViewModel (private val albumsInteractor: IAlbumsInteractor,
     private var _noMediaAlertDialogLiveData = MutableLiveData<Event<String>>()
     val noMediaAlertDialogLiveData: LiveData<Event<String>> = _noMediaAlertDialogLiveData
 
-    val errorLiveData: LiveData<Event<String>> = _errorLiveData
+    val errorLiveData: LiveData<Event<String>> = _errorBaseLiveData
 
     private var _bottomSheetErrorLiveData = MutableLiveData<String>()
     val bottomSheetErrorLiveData: LiveData<String> = _bottomSheetErrorLiveData
@@ -115,7 +115,7 @@ class AlbumsViewModel (private val albumsInteractor: IAlbumsInteractor,
 
     override fun handleError(error: Throwable) {
         _loaderLiveData.postValue(false)
-        _errorLiveData.postValue(Event(error.message ?: ""))
+        _errorBaseLiveData.postValue(Event(error.message ?: ""))
     }
 
     private suspend fun openAuthFragment(){
