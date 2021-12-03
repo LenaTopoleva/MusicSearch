@@ -79,7 +79,9 @@ class AuthViewModel(
     private suspend fun authenticateUser(email: String, password: String){
         withContext(dispatcherProvider.io()){
             val authUser: User? = authInteractor.authUser(email, password)
-            authUser?.let { userIsAuth() } ?: _userNotRegistratedAlertDialogLiveData.postValue(Event(""))
+            authUser?.let {
+                withContext(dispatcherProvider.main()){ userIsAuth() }
+            } ?: _userNotRegistratedAlertDialogLiveData.postValue(Event(""))
         }
     }
 
