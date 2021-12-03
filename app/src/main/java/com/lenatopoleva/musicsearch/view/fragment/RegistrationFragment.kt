@@ -12,11 +12,8 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
 import com.lenatopoleva.musicsearch.R
 import com.lenatopoleva.musicsearch.databinding.FragmentRegistrationBinding
-import com.lenatopoleva.musicsearch.model.data.RegistrationState
-import com.lenatopoleva.musicsearch.utils.ui.MainActivityAlertDialogFragment
-import com.lenatopoleva.musicsearch.utils.ui.BackButtonListener
-import com.lenatopoleva.musicsearch.utils.ui.InputHelper
-import com.lenatopoleva.musicsearch.utils.ui.TextValidator
+import com.lenatopoleva.musicsearch.utils.Event
+import com.lenatopoleva.musicsearch.utils.ui.*
 import com.lenatopoleva.musicsearch.viewmodel.fragment.RegistrationViewModel
 import org.koin.android.ext.android.getKoin
 import java.text.SimpleDateFormat
@@ -41,7 +38,9 @@ class RegistrationFragment : Fragment(), BackButtonListener {
     private val passwordObserver = Observer<Boolean> { changeTextInputLayout(it, binding.password, getString(R.string.password_error)) }
     private val birthDateObserver = Observer<String> { changeAgeTextInputEditText(it) }
 
-    private val registrationStateObserver = Observer<RegistrationState> { renderData(it)  }
+    private val regFailObserver = Observer<Event<String>> { event-> event.getContentIfNotHandled()?.let { showAlertDialog(getString(R.string.oops), getString(R.string.reg_error_email_exists)) } }
+    private val errorObserver = Observer<Event<String>> { event-> event.getContentIfNotHandled()?.let { showAlertDialog(getString(R.string.error_stub), it) } }
+    private val loadingObserver = Observer<Event<String>> { event-> event.getContentIfNotHandled()?.let { requireContext().toast(getString(R.string.saving)) } }
 
     private val datePicker by lazy {
         MaterialDatePicker.Builder.datePicker()
@@ -76,7 +75,9 @@ class RegistrationFragment : Fragment(), BackButtonListener {
         model.passwordValidationLiveData.observe(viewLifecycleOwner, passwordObserver)
         model.birthDateLiveData.observe(viewLifecycleOwner, birthDateObserver)
 
-        model.registrationStateLiveData.observe(viewLifecycleOwner, registrationStateObserver)
+        model.regFailAlertDialogLiveData.observe(viewLifecycleOwner, regFailObserver)
+        model.errorAlertDialogLiveData.observe(viewLifecycleOwner, errorObserver)
+        model.loadingLiveData.observe(viewLifecycleOwner, loadingObserver)
     }
 
     override fun onResume() {
@@ -129,18 +130,6 @@ class RegistrationFragment : Fragment(), BackButtonListener {
 
     private fun openDatePicker(){
         datePicker.show(childFragmentManager, DATE_PICKER_TAG)
-    }
-
-
-    private fun renderData(regState: RegistrationState) {
-        when(regState){
-            is RegistrationState.Success -> {
-                if (regState.doneSuccessful) model.userIsRegistrated()
-                else showAlertDialog(getString(R.string.oops), getString(R.string.reg_error_email_exists))
-            }
-            is RegistrationState.Error -> showAlertDialog(getString(R.string.error_stub),
-                regState.error.message ?: "")
-        }
     }
 
     private fun showAlertDialog(title: String, message: String) {

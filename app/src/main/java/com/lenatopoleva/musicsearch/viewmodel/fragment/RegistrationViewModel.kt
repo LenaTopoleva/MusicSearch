@@ -3,10 +3,10 @@ package com.lenatopoleva.musicsearch.viewmodel.fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lenatopoleva.musicsearch.model.data.RegistrationState
 import com.lenatopoleva.musicsearch.model.dispatchers.IDispatcherProvider
 import com.lenatopoleva.musicsearch.model.interactor.fragment.IAuthInteractor
 import com.lenatopoleva.musicsearch.navigation.Screens
+import com.lenatopoleva.musicsearch.utils.Event
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator
 import kotlinx.coroutines.*
 import ru.terrakok.cicerone.Router
@@ -43,8 +43,14 @@ class RegistrationViewModel(
     private val _birthDateLiveData = MutableLiveData<String>()
     val birthDateLiveData : LiveData<String> = _birthDateLiveData
 
-    private val _registrationStateLiveData = MutableLiveData<RegistrationState>()
-    val registrationStateLiveData : LiveData<RegistrationState> = _registrationStateLiveData
+    private val _errorAlertDialogLiveData = MutableLiveData<Event<String>>()
+    val errorAlertDialogLiveData : LiveData<Event<String>> = _errorAlertDialogLiveData
+
+    private val _regFailAlertDialogLiveData = MutableLiveData<Event<String>>()
+    val regFailAlertDialogLiveData : LiveData<Event<String>> = _regFailAlertDialogLiveData
+
+    private val _loadingLiveData = MutableLiveData<Event<String>>()
+    val loadingLiveData : LiveData<Event<String>> = _loadingLiveData
 
     protected val viewModelCoroutineScope = CoroutineScope(
         Dispatchers.Main
@@ -58,7 +64,7 @@ class RegistrationViewModel(
     }
 
     private fun handleError(error: Throwable){
-        _registrationStateLiveData.postValue(RegistrationState.Error(error))
+        _errorAlertDialogLiveData.postValue(Event(error.message ?: ""))
     }
 
     fun validate(text: String, type: String) {
@@ -147,12 +153,17 @@ class RegistrationViewModel(
     private suspend fun registerUser(name: String, surname: String, age: String,
                                      phone: String, email: String, password: String){
         withContext(dispatcherProvider.io()){
-            _registrationStateLiveData.postValue(authInteractor.registerUser(name, surname, age, phone, email, password))
+            _loadingLiveData.postValue(Event(""))
+            val isRegistered = authInteractor.registerUser(name, surname, age, phone, email, password)
+            if(isRegistered) userIsRegistrated()
+            else _regFailAlertDialogLiveData.postValue(Event(""))
         }
     }
 
-    fun userIsRegistrated() {
-        router.replaceScreen(Screens.AuthScreen())
+    suspend fun userIsRegistrated() {
+        withContext(dispatcherProvider.main()) {
+            router.replaceScreen(Screens.AuthScreen())
+        }
     }
 
     fun backPressed(): Boolean {

@@ -35,6 +35,9 @@ class AuthViewModel(
     private val _errorAlertDialogLiveData = MutableLiveData<Event<String>>()
     val errorAlertDialogLiveData : LiveData<Event<String>> = _errorAlertDialogLiveData
 
+    private val _loadingLiveData = MutableLiveData<Event<String>>()
+    val loadingLiveData : LiveData<Event<String>> = _loadingLiveData
+
     protected val viewModelCoroutineScope = CoroutineScope(
         Dispatchers.Main
                 + SupervisorJob()
@@ -78,6 +81,7 @@ class AuthViewModel(
 
     private suspend fun authenticateUser(email: String, password: String){
         withContext(dispatcherProvider.io()){
+            _loadingLiveData.postValue(Event(""))
             val authUser: User? = authInteractor.authUser(email, password)
             authUser?.let {
                 withContext(dispatcherProvider.main()){ userIsAuth() }

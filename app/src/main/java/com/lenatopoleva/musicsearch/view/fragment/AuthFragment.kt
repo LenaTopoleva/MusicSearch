@@ -13,6 +13,7 @@ import com.lenatopoleva.musicsearch.utils.Event
 import com.lenatopoleva.musicsearch.utils.ui.BackButtonListener
 import com.lenatopoleva.musicsearch.utils.ui.MainActivityAlertDialogFragment
 import com.lenatopoleva.musicsearch.utils.ui.TextValidator
+import com.lenatopoleva.musicsearch.utils.ui.toast
 import com.lenatopoleva.musicsearch.viewmodel.fragment.AuthViewModel
 import org.koin.android.ext.android.getKoin
 
@@ -32,6 +33,7 @@ class AuthFragment: Fragment(), BackButtonListener {
         Observer<Event<String>> { event -> event.getContentIfNotHandled()?.let { showUserNotRegistratedAlerdDialog() }}
     private val errorAlertDialogObserver =
         Observer<Event<String>> { event -> event.getContentIfNotHandled()?.let { showAlertDialog(getString(R.string.error_stub), it) }}
+    private val loadingObserver = Observer<Event<String>> { event-> event.getContentIfNotHandled()?.let { requireContext().toast(getString(R.string.searching)) } }
 
     private var _binding: FragmentAuthBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
@@ -55,6 +57,7 @@ class AuthFragment: Fragment(), BackButtonListener {
         model.passwordValidationLiveData.observe(viewLifecycleOwner, passwordObserver)
         model.userNotRegistratedAlertDialogLiveData.observe(viewLifecycleOwner, userNotRegistratedAlertDialogObserver)
         model.errorAlertDialogLiveData.observe(viewLifecycleOwner, errorAlertDialogObserver)
+        model.loadingLiveData.observe(viewLifecycleOwner, loadingObserver)
     }
 
     override fun onResume() {

@@ -20,7 +20,7 @@ class RoomDatabase(private val usersDao: UsersDao,
                    private val argon2Kt: Argon2Kt
 ): IAuthDataSource, IDataSourceLocal {
 
-    private suspend fun generatePasswordHash(password: String): String {
+    private fun generatePasswordHash(password: String): String {
         //generate salt
         val salt = getRandomString(8)
 
@@ -32,11 +32,6 @@ class RoomDatabase(private val usersDao: UsersDao,
             tCostInIterations = 5,
             mCostInKibibyte = 65536
         )
-
-        println("hashResult: $hashResult")
-        println("Raw hash: ${hashResult.rawHashAsHexadecimal()}")
-        println("Encoded string: ${hashResult.encodedOutputAsString()}")
-
         return hashResult.encodedOutputAsString()
     }
 
